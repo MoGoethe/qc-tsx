@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'qcloud-ui-tsx/src/components'
+import { Button } from 'qcloud-ui-tsx/packages'
 
 const App = ({ name }) => {
   return (
