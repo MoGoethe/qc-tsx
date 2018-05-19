@@ -1,0 +1,6 @@
+.babelrc 包含编译阶段一些有用的转转码规则(presets)
+.eslintrc包含linter配置
+.gitignore和.npmignore分别用于忽略来自 git 和 npm 的文件
+/lib将是存放我们的组件和样式的地方。
+
+
