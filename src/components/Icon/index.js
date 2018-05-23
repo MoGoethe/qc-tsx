@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 from 'react';
 import classNames from 'classnames';  
@@ -36,3 +37,4 @@ dir、lang。
 };
 
 export default Icon;
+*/
