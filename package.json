@@ -7,7 +7,6 @@
     "build": "babel src -d build",
     "lint": "eslint src/**; exit 0",
     "lint:watch": "esw -w src/**",
-    "prepublish": "npm run build",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
@@ -27,13 +26,13 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-watch": "^3.1.4",
     "polished": "^1.9.2",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
     "react-scripts": "^1.1.4",
     "styled-components": "^3.2.6"
   },
   "dependencies": {
+    "react": "^16.3.2",
+    "prop-types": "^15.6.1",
+    "react-dom": "^16.3.2",
     "classnames": "^2.2.5",
     "rc-animate": "^2.4.4"
   }
