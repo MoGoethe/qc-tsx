@@ -1,20 +1,61 @@
 import styled from 'styled-components';
 import * as colors from '../styles/colors';
 
+const buttonSizes = {
+  small: {
+    'font-size': '14px',
+    'line-height': '28px',
+    padding: '0 8px',
+  },
+  medium: {
+    'font-size': '16px',
+    'line-height': '32px',
+    padding: '0 14px',
+  },
+  large: {
+    'font-size': '18px',
+    'line-height': '36px',
+    padding: '0 20px',
+  },
+  wide: {
+    'font-size': '16px',
+    'line-height': '40px',
+    padding: '0 36px',
+  },
+  extraWide: {
+    'font-size': '16px',
+    'line-height': '40px',
+    padding: '0 72px',
+  },
+  fullWidth: {
+    'font-size': '16px',
+    'line-height': '40px',
+    padding: '0 8px',
+  },
+};
+
+function setDisplay({ size }) {
+  return size === 'fullWidth' ? 'block' : 'inline-block';
+}
+
+function setWidth({ size }) {
+  return size === 'fullWidth' ? '100%' : 'initial';
+}
+
 const Button =styled.button`
   background: ${({ bgColor })  => colors[bgColor]};
   border: none;
   border-radius: 2px;
   color: ${({ fontColor })  => colors[fontColor]};
   cursor: pointer;
-  display: inline-block;
-  font-size: 16px;
-  line-height: 40px;
+  display: ${setDisplay};
+  font-size: ${({ size }) => buttonSizes[size]['font-size']};
+  line-height: ${({ size }) => buttonSizes[size]['line-height']};
   font-weight: 200;
   margin: 8px 0;
   outline: none;
-  padding: 0 12px;
-  text-transform: uppercase;
+  padding: ${({ size }) => buttonSizes[size]['padding']};
+  width: ${setWidth};
   transition: all 300ms ease;
   &:hover {
     background: ${({ hoverColor })  => colors[hoverColor]};
@@ -24,7 +65,7 @@ const Button =styled.button`
 Button.defaultProps = {
   bgColor: 'blue',
   fontColor: 'white',
-  hoverColor: 'darkBlue',
+  size: 'medium',
 };
 
 export default Button;
