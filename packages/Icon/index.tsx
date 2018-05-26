@@ -1,6 +1,5 @@
-/*
 import React from 'react';
-from 'react';
+//from 'react';
 import classNames from 'classnames';  
 import omit from 'omit.js';
 //React就不用说了，classNames与omit这两个文件的作用：
@@ -30,11 +29,9 @@ const Icon = (props: IconProps) => {//TypeScript的无状态组件的写法
     [`anticon-${type}`]: true,
   }, className);
 
-  // 这里说一下为什么要用omit()：html的<i>标签，其标准标签属性只有六种：id、class、title、style、
-dir、lang。
+  // 这里说一下为什么要用omit()：html的<i>标签，其标准标签属性只有六种：id、class、title、style、dir、lang。
   // IconProps接口中的6种属性（方法），type、spin不属于上述六种。onClick为事件属性，可以；
   return <i {...omit(props, ['type', 'spin'])} className={classString} />;
 };
 
 export default Icon;
-*/
