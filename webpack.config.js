@@ -1,34 +1,97 @@
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const extractCSS = new ExtractTextPlugin('css/[name]-css.css');
+const extractSASS = new ExtractTextPlugin('css/[name]-sass.css');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 module.exports = {
     entry: "./examples/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/examples/"
+        path: __dirname + "/examples/dist"
     },
-
-    // Enable sourcemaps for debugging webpack's output.
+    // 启用source map
     devtool: "source-map",
-
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
     },
-
     module: {
         rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+            {
+                test: /\.jsx?$/,
+                loader: "babel-loader",
+                include: [
+                    path.resolve(__dirname, 'packages'),
+                    path.resolve(__dirname, 'examples')
+                ],
+                options: {
+                    presets: ['@babel/preset-react']
+                }
+            },
+            {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader",
+                include: [
+                    path.resolve(__dirname, 'packages'),
+                    path.resolve(__dirname, 'examples'),
+                    path.resolve(__dirname, 'tests')
+                ]
+            },
+            {
+                test: /\.svg(\?.*)?$/, // match img.svg and img.svg?param=value
+                use: [
+                    'file-loader', // or file-loader or svg-url-loader
+                    'svg-transform-loader'
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: extractCSS.extract({
+                    use: "css-loader",
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.scss$/,
+                use: extractSASS.extract({
+                    use: [
+                        { loader: "css-loader" },
+                        { loader: "sass-loader" }
+                    ],
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.(png|jpg|gif|jpeg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8192,
+                        name: 'img/[name].[ext]',
+                        publicPath: '../'
+                    }
+                }]
+            },
+            {
+                enforce: "pre",
+                test: /\.jsx?$/,
+                loader: "source-map-loader"
+            }
         ]
     },
-
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
+    devServer: {
+        contentBase: path.resolve(__dirname, "examples/dist"),
     },
+    plugins: [
+        new HtmlWebpackPlugin({ template: './examples/index.html', filename: 'index.html' }),
+        extractCSS,
+        extractSASS
+    ]
+    /*,
+        externals: {
+            "react": "React",
+            "react-dom": "ReactDOM"
+        },*/
 };

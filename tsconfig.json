@@ -1,27 +1,17 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "jsx": "react",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "outDir": "./examples/dist/",
+    "sourceMap": true,
     "noImplicitAny": true,
-    "target": "es6",
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
     "lib": [
       "dom",
       "es7"
     ]
   },
-  "include":[
-    "./packages/**/*"
-  ],
   "exclude": [
-    "node_modules",
-    "lib",
-    "es"
+    "node_modules"
   ]
 }
-/*
-
-*/

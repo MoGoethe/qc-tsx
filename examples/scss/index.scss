@@ -1,0 +1,13 @@
+.icon{
+	display: block;
+	width: 100px;
+	height: 100px;
+	background-position: center;
+	background-image: url('../img/vinyls.svg?fill=blue');
+	background-size: 100%;
+	transition:all .5s;
+	&:hover{
+		background-size: 100%;
+		background-image: url('../img/vinyls.svg?fill=red');
+	}
+}
