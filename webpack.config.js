@@ -1,10 +1,20 @@
 const path = require('path');
+<<<<<<< HEAD
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+=======
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const extractCSS = new ExtractTextPlugin('css/[name]-css.css');
+const extractSASS = new ExtractTextPlugin('css/[name]-sass.css');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+>>>>>>> 61c4cf743dd7812467d34729a7bdc7c495e58ff9
 
 module.exports = {
     entry: path.resolve(__dirname, 'examples/src', 'index.js'),
     output: {
+<<<<<<< HEAD
         path: path.resolve(__dirname, 'examples/tmp'),
         filename: 'bundle.js'
     },
@@ -19,10 +29,32 @@ module.exports = {
                     query: {
                         presets: ['env', 'stage-0']
                     }
+=======
+        filename: "bundle.js",
+        path: __dirname + "/examples/dist"
+    },
+    // 启用source map
+    devtool: "source-map",
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
+    },
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                loader: "babel-loader",
+                include: [
+                    path.resolve(__dirname, 'packages'),
+                    path.resolve(__dirname, 'examples')
+                ],
+                options: {
+                    presets: ['@babel/preset-react']
+>>>>>>> 61c4cf743dd7812467d34729a7bdc7c495e58ff9
                 }
             },
             {
                 test: /\.tsx?$/,
+<<<<<<< HEAD
                 loader: "ts-loader",
                 exclude: /node_modules/
             },
@@ -67,3 +99,68 @@ module.exports = {
         "react-dom": "ReactDOM"
     }
 }
+=======
+                loader: "awesome-typescript-loader",
+                include: [
+                    path.resolve(__dirname, 'packages'),
+                    path.resolve(__dirname, 'examples'),
+                    path.resolve(__dirname, 'tests')
+                ]
+            },
+            {
+                test: /\.svg(\?.*)?$/, // match img.svg and img.svg?param=value
+                use: [
+                    'file-loader', // or file-loader or svg-url-loader
+                    'svg-transform-loader'
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: extractCSS.extract({
+                    use: "css-loader",
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.scss$/,
+                use: extractSASS.extract({
+                    use: [
+                        { loader: "css-loader" },
+                        { loader: "sass-loader" }
+                    ],
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.(png|jpg|gif|jpeg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8192,
+                        name: 'img/[name].[ext]',
+                        publicPath: '../'
+                    }
+                }]
+            },
+            {
+                enforce: "pre",
+                test: /\.jsx?$/,
+                loader: "source-map-loader"
+            }
+        ]
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, "examples/dist"),
+    },
+    plugins: [
+        new HtmlWebpackPlugin({ template: './examples/index.html', filename: 'index.html' }),
+        extractCSS,
+        extractSASS
+    ]
+    /*,
+        externals: {
+            "react": "React",
+            "react-dom": "ReactDOM"
+        },*/
+};
+>>>>>>> 61c4cf743dd7812467d34729a7bdc7c495e58ff9
