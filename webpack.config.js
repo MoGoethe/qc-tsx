@@ -1,34 +1,69 @@
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
-    entry: "./examples/index.tsx",
+    entry: path.resolve(__dirname, 'examples/src', 'index.js'),
     output: {
-        filename: "bundle.js",
-        path: __dirname + "/examples/"
+        path: path.resolve(__dirname, 'examples/tmp'),
+        filename: 'bundle.js'
     },
-
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
-
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: ['.js', '.json', '.jsx', '.tsx', '.ts']
     },
-
     module: {
-        rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+        rules: [{
+                test: /\.jsx?$/,
+                use: {
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['env', 'stage-0']
+                    }
+                }
+            },
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader",
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loader: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(jpg|png|gif|svg)$/,
+                use: 'url-loader',
+                include: path.join(__dirname, './examples/src'),
+                exclude: /node_modules/
+            }
         ]
     },
-
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
+    watch: true,
+    watchOptions: {
+        ignored: /node_modules/, //忽略不用监听变更的目录
+        aggregateTimeout: 500, //防止重复保存频繁重新编译,500毫米内重复保存不打包
+        poll: 1000 //每秒询问的文件变更的次数
+    },
+    devServer: { //配置此静态文件服务器，可以用来预览打包后项目
+        contentBase: path.resolve(__dirname, 'examples/dist'), //开发服务运行时的文件根目录
+        host: 'localhost', //主机地址
+        port: 9090, //端口号
+        compress: true //开发服务器是否启动gzip等压缩
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'examples', 'index.html'),
+            filename: 'index.html',
+            chunks: ['index'],
+            hash: true, //防止缓存
+            minify: {
+                removeAttributeQuotes: true //压缩 去掉引号
+            }
+        })
+        //new UglifyjsWebpackPlugin()
+    ],
     externals: {
         "react": "React",
         "react-dom": "ReactDOM"
-    },
-};
+    }
+}
