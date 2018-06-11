@@ -13,9 +13,7 @@ import Icon from '../icon';
 export type ButtonType = 'default' | 'primary' | 'ghost' | 'dashed' | 'danger';
 export type ButtonSize = 'small' | 'default' | 'large';
 
-export interface ButtonProps{
-
-}
+export interface ButtonProps{}
 
 export default class Button extends React.Component<ButtonProps, any> {
 
