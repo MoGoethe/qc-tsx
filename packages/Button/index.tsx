@@ -18,7 +18,6 @@ export interface ButtonProps{}
 export default class Button extends React.Component<ButtonProps, any> {
 
 	render(){
-
 		return( <button>btn-text</button>)
 	}
 }
